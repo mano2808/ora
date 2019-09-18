@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ora-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ora-app
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: oracle
+          image: container-registry.oracle.com/database/enterprise:12.2.0.1
+          ports:
+             - containerPort: 1521
+          volumeMounts:
+           - name: ora-data
+             mountPath: /var/opt/ora
+      volumes:
+      - name: ora-data
+        persistentVolumeClaim:
+
+          claimName: ora-db-claim
+
